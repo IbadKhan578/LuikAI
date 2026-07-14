@@ -9,6 +9,7 @@ from model import CNN
 from gradcam import GradCAM
 from utils import overlay_cam, encode_image
 from chatbot import *
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -54,8 +55,8 @@ async def predict(file: UploadFile = File(...)):
     cam = gradcam.generate(input_tensor, pred_idx)
 
     h, w = img_np.shape[:2]
-    heatmap_img = cam_to_color(cam, target_size=(w, h))   # standalone heatmap
-    overlay_img = overlay_cam(img_np, cam)                # blended overlay
+    heatmap_img = cam_to_color(cam, target_size=(w, h))   
+    overlay_img = overlay_cam(img_np, cam)               
 
     probabilities = [
         {"label": name, "probability": float(p)}
